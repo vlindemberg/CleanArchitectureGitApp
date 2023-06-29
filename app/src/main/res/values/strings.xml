@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">CleanArchitectureGitApp</string>
+    <string name="back">Voltar</string>
+    <string name="subtitle">Repositorios</string>
+    <string name="title">Github Users</string>
+    <string name="search_users">Pesquisar usuario</string>
+</resources>
