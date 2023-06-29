@@ -3,7 +3,7 @@ package com.example.cleanarchitecturegitapp.presentation.view.gitUserDetails
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cleanarchitecturegitapp.domain.usecase.GetGitRepoUseCase
-import com.example.cleanarchitecturegitapp.domain.usecase.GetGitUserUseCase
+import com.example.cleanarchitecturegitapp.domain.usecase.GetGitUserInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GitUserDetailsViewModel @Inject constructor(
     private val getGitRepoUseCase: GetGitRepoUseCase,
-    private val getGitUserUseCase: GetGitUserUseCase,
+    private val getGitUserInfoUseCase: GetGitUserInfoUseCase,
 ) : ViewModel() {
 
     private val _states = MutableStateFlow(GitUserDetailState(isLoading = true))
@@ -39,7 +39,7 @@ class GitUserDetailsViewModel @Inject constructor(
     fun getUser(name: String) {
         viewModelScope.launch {
             runCatching {
-                getGitUserUseCase(name)
+                getGitUserInfoUseCase(name)
             }.onSuccess { user ->
                 _states.value = _states.value.copy(isLoading = false, user = user)
             }.onFailure { error ->

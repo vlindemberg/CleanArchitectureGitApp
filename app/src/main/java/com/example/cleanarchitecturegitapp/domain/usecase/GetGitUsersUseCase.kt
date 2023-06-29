@@ -5,10 +5,10 @@ import com.example.cleanarchitecturegitapp.presentation.extensions.toViewDataMod
 import com.example.cleanarchitecturegitapp.presentation.model.GitUserViewData
 import javax.inject.Inject
 
-class GetGitInfoUseCase @Inject constructor(
+class GetGitUsersUseCase @Inject constructor(
     private val gitUserRepository: GitUserRepository
 ) {
     suspend operator fun invoke(): List<GitUserViewData> {
-        return gitUserRepository.getGitInfo().toViewDataModel()
+        return gitUserRepository.getGitUsers().toViewDataModel()
     }
 }

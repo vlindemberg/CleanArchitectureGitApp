@@ -17,7 +17,7 @@ import com.example.cleanarchitecturegitapp.presentation.model.GitUserViewData
 import com.example.cleanarchitecturegitapp.presentation.view.gitUserList.adapter.GitUserAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Locale
 
 @AndroidEntryPoint
 class GitUsersListFragment : Fragment() {
@@ -83,7 +83,9 @@ class GitUsersListFragment : Fragment() {
     }
 
     private fun loadError(errorMessage: String) {
-        Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        if (errorMessage.isEmpty().not()) {
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun loadUsersList(users: List<GitUserViewData>) {
@@ -115,8 +117,11 @@ class GitUsersListFragment : Fragment() {
                 }
             }
             if (filteredList.isEmpty()) {
-                loadError("Not Found")
+                binding.constraintLayout.visibility = View.GONE
+                binding.emptyList.visibility = View.VISIBLE
             } else {
+                binding.constraintLayout.visibility = View.VISIBLE
+                binding.emptyList.visibility = View.GONE
                 adapterLocation.setFilteredList(filteredList)
             }
         }

@@ -70,7 +70,9 @@ class GitUserDetailsFragment : Fragment() {
     }
 
     private fun loadError(errorMessage: String) {
-        Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        if (errorMessage.isEmpty().not()) {
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun loadRepoGitList(repoGit: List<GitRepoViewData>) {

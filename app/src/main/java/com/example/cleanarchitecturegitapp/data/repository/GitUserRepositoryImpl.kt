@@ -9,8 +9,8 @@ import javax.inject.Inject
 class GitUserRepositoryImpl @Inject constructor(
     private val gitUserRemoteDataSource: GitUserRemoteDataSource
 ) : GitUserRepository {
-    override suspend fun getGitInfo(): List<GitUser> =
-        gitUserRemoteDataSource.fetchGitInfo().map { user ->
+    override suspend fun getGitUsers(): List<GitUser> =
+        gitUserRemoteDataSource.fetchGitUsers().map { user ->
             GitUser(
                 id = user.id.toString(),
                 imgUrl = user.avatarUrl,
@@ -20,6 +20,6 @@ class GitUserRepositoryImpl @Inject constructor(
             )
         }
 
-    override suspend fun getUser(name: String): GitUser =
-        gitUserRemoteDataSource.fetchUser(name).toUser()
+    override suspend fun getGitUserInfo(name: String): GitUser =
+        gitUserRemoteDataSource.fetchGitUserInfo(name).toUser()
 }
