@@ -90,7 +90,7 @@ class GitUsersListFragment : Fragment() {
     private fun loadUsersList(users: List<GitUserViewData>) {
         userListLocation = users;
         adapterLocation = GitUserAdapter(users, onItemClickListener = {
-            goDetails(it.name)
+            navigateToUserDetails(it.name)
         })
         binding.recyclerView.run {
             layoutManager = LinearLayoutManager(requireContext())
@@ -99,13 +99,12 @@ class GitUsersListFragment : Fragment() {
         }
     }
 
-    private fun goDetails(userName: String) {
+    private fun navigateToUserDetails(userName: String) {
         navControl.navigate(
             GitUsersListFragmentDirections
                 .actionUserListToUsersDetailsFragment(userName)
         )
     }
-
 
     private fun setupFilterList(text: String?) {
         val filteredList = viewModel.filterList(text, userListLocation)

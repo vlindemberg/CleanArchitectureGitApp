@@ -19,7 +19,6 @@ class GitUserAdapter(
     fun setFilteredList(userList: List<GitUserViewData>) {
         this.userList = userList
         notifyDataSetChanged()
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GitUserViewHolder {
