@@ -17,7 +17,6 @@ import com.example.cleanarchitecturegitapp.presentation.model.GitUserViewData
 import com.example.cleanarchitecturegitapp.presentation.view.gitUserList.adapter.GitUserAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 @AndroidEntryPoint
 class GitUsersListFragment : Fragment() {
@@ -58,7 +57,7 @@ class GitUsersListFragment : Fragment() {
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    filterList(newText)
+                    setupFilterList(newText)
                     return true
                 }
             })
@@ -108,22 +107,15 @@ class GitUsersListFragment : Fragment() {
     }
 
 
-    private fun filterList(name: String?) {
-        if (name != null) {
-            val filteredList = ArrayList<GitUserViewData>()
-            for (i in userListLocation) {
-                if (i.name.lowercase(Locale.ROOT).contains(name)) {
-                    filteredList.add(i)
-                }
-            }
-            if (filteredList.isEmpty()) {
-                binding.constraintLayout.visibility = View.GONE
-                binding.emptyList.visibility = View.VISIBLE
-            } else {
-                binding.constraintLayout.visibility = View.VISIBLE
-                binding.emptyList.visibility = View.GONE
-                adapterLocation.setFilteredList(filteredList)
-            }
+    private fun setupFilterList(text: String?) {
+        val filteredList = viewModel.filterList(text, userListLocation)
+        if (filteredList.isEmpty()) {
+            binding.constraintLayout.visibility = View.GONE
+            binding.emptyList.visibility = View.VISIBLE
+        } else {
+            binding.constraintLayout.visibility = View.VISIBLE
+            binding.emptyList.visibility = View.GONE
+            adapterLocation.setFilteredList(filteredList)
         }
     }
 

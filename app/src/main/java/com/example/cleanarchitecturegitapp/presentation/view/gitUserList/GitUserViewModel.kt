@@ -3,10 +3,12 @@ package com.example.cleanarchitecturegitapp.presentation.view.gitUserList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cleanarchitecturegitapp.domain.usecase.GetGitUsersUseCase
+import com.example.cleanarchitecturegitapp.presentation.model.GitUserViewData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,5 +37,20 @@ class GitUserViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    fun filterList(
+        name: String?,
+        userListLocation: List<GitUserViewData>
+    ): List<GitUserViewData> {
+        val filteredList = ArrayList<GitUserViewData>()
+        if (name != null) {
+            for (i in userListLocation) {
+                if (i.name.lowercase(Locale.ROOT).contains(name)) {
+                    filteredList.add(i)
+                }
+            }
+        }
+        return filteredList
     }
 }
