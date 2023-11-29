@@ -39,10 +39,6 @@ class GitUserDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupObservers()
-    }
-
-    override fun onResume() {
-        super.onResume()
         loadDate()
     }
 
@@ -54,8 +50,8 @@ class GitUserDetailsFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.states.collect {
                 setupLoading(it.isLoading)
-                loadRepoGitList(it.gitRepoList)
                 loadUser(it.user)
+                loadRepoGitList(it.gitRepoList)
                 loadError(it.errorMessage)
             }
         }
@@ -94,8 +90,8 @@ class GitUserDetailsFragment : Fragment() {
     }
 
     private fun loadDate() {
-        viewModel.getRepoGit(args.username)
         viewModel.getUser(args.username)
+        viewModel.getRepoGit(args.username)
     }
 
     override fun onDestroyView() {

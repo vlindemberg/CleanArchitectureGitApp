@@ -7,6 +7,7 @@ import com.example.cleanarchitecturegitapp.presentation.model.GitUserViewData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
@@ -19,22 +20,22 @@ class GitUserViewModel @Inject constructor(
     private val _states = MutableStateFlow(GitUserState(isLoading = true))
     val states: StateFlow<GitUserState> = _states
 
-    init {
-        getUsers()
-    }
-
-    private fun getUsers() {
+    fun getUsers() {
         viewModelScope.launch {
             runCatching {
                 getGitUsersUseCase()
             }.onSuccess { gitUsers ->
-                _states.value = _states.value.copy(isLoading = false, userList = gitUsers)
+                _states.update {
+                    GitUserState(isLoading = false, userList = gitUsers)
+                }
             }.onFailure { error ->
-                _states.value = _states.value.copy(
-                    isLoading = false,
-                    userList = emptyList(),
-                    errorMessage = "Something went wrong: $error"
-                )
+                _states.update {
+                    GitUserState(
+                        isLoading = false,
+                        userList = emptyList(),
+                        errorMessage = "Something went wrong: $error"
+                    )
+                }
             }
         }
     }

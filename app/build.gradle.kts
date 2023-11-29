@@ -96,4 +96,6 @@ dependencies {
 
     implementation(libs.navigationFragmentKtx)
     implementation(libs.navigationUiKtx)
+    testImplementation(libs.turbine)
+    testImplementation(libs.mockito.inline)
 }

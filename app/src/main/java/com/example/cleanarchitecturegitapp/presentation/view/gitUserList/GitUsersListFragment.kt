@@ -46,6 +46,7 @@ class GitUsersListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupObservers()
         setupSearch()
+        viewModel.getUsers()
     }
 
     private fun setupSearch() {

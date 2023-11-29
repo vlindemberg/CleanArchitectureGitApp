@@ -4,9 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cleanarchitecturegitapp.domain.usecase.GetGitRepoUseCase
 import com.example.cleanarchitecturegitapp.domain.usecase.GetGitUserInfoUseCase
+import com.example.cleanarchitecturegitapp.presentation.model.GitUserViewData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,19 +21,20 @@ class GitUserDetailsViewModel @Inject constructor(
     private val _states = MutableStateFlow(GitUserDetailState(isLoading = true))
     val states: StateFlow<GitUserDetailState> = _states
 
-
     fun getRepoGit(name: String) {
         viewModelScope.launch {
             runCatching {
                 getGitRepoUseCase(name)
             }.onSuccess { repoList ->
-                _states.value = _states.value.copy(isLoading = false, gitRepoList = repoList)
+                _states.update {
+                    GitUserDetailState(
+                        isLoading = false,
+                        gitRepoList = repoList,
+                        user = it.user
+                    )
+                }
             }.onFailure { error ->
-                _states.value = _states.value.copy(
-                    isLoading = false,
-                    gitRepoList = emptyList(),
-                    errorMessage = "Something went wrong: $error"
-                )
+                handleError(error)
             }
         }
     }
@@ -41,14 +44,26 @@ class GitUserDetailsViewModel @Inject constructor(
             runCatching {
                 getGitUserInfoUseCase(name)
             }.onSuccess { user ->
-                _states.value = _states.value.copy(isLoading = false, user = user)
+                _states.update {
+                    GitUserDetailState(
+                        isLoading = false,
+                        gitRepoList = it.gitRepoList,
+                        user = user,
+                    )
+                }
             }.onFailure { error ->
-                _states.value = _states.value.copy(
-                    isLoading = false,
-                    gitRepoList = emptyList(),
-                    errorMessage = "Something went wrong: $error"
-                )
+                handleError(error)
             }
+        }
+    }
+
+    private fun handleError(error: Throwable) {
+        _states.update {
+            GitUserDetailState(
+                isLoading = false,
+                gitRepoList = emptyList(),
+                errorMessage = "Something went wrong: $error"
+            )
         }
     }
 }

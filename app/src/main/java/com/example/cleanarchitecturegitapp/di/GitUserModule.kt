@@ -30,7 +30,7 @@ interface UserModule {
     fun bindGitUserRemoteDataSource(gitUserRemoteDataSource: GitUserRemoteDataSourceImpl): GitUserRemoteDataSource
 
     @Binds
-    fun bindGitRepoRemote(gitRepoRemoteDataSource: GitRepoRemoteDataSourceImpl):GitRepoRemoteDataSource
+    fun bindGitRepoRemoteDataSource(gitRepoRemoteDataSource: GitRepoRemoteDataSourceImpl): GitRepoRemoteDataSource
 
     @Binds
     fun bindGitRepoRepository(gitRepoRepository: GitRepoRepositoryImpl): GitRepoRepository
@@ -41,12 +41,12 @@ interface UserModule {
 object UserNetworkingModule {
 
     @Provides
-    fun providesGitUserService(retrofit: Retrofit) : GitUserService {
+    fun providesGitUserService(retrofit: Retrofit): GitUserService {
         return retrofit.create()
     }
 
     @Provides
-    fun providesGitRepoService(retrofit: Retrofit) : GitRepoService {
+    fun providesGitRepoService(retrofit: Retrofit): GitRepoService {
         return retrofit.create()
     }
 }
